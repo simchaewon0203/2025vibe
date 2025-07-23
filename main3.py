@@ -1,10 +1,6 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="콘텐츠 타이틀 생성기", page_icon="🎬")
-st.title("🎬 콘텐츠 타이틀/제목 생성기")
-st.markdown("키워드와 스타일을 입력하면 클릭을 유도할 수 있는 제목을 자동으로 생성해드립니다.")
-st.set_page_config(page_title="콘텐츠 타이틀 생성기", page_icon="🎬", layout="wide")
 # 새로운 스타일 (모던 & 크림톤)
 st.markdown("""
     <style>
