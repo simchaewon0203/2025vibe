@@ -1,56 +1,43 @@
 import streamlit as st
-import os
-import json
-from datetime import datetime
+import random
 
-# --- 설정 ---
-DATA_FILE = "plant_data.json"
-MAX_STAGE = 5  # 최대 성장 단계 (0~5)
-PLANT_IMAGES = [
-    "🌱",  # 0단계
-    "🌿",  # 1단계
-    "🍀",  # 2단계
-    "🌼",  # 3단계
-    "🌷",  # 4단계
-    "🌻"   # 5단계 - 만개
+st.set_page_config(page_title="칭찬 머신 💬", page_icon="😊")
+
+st.markdown("""
+    <style>
+    .centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .compliment {
+        font-size: 32px;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 30px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 칭찬 리스트
+compliments = [
+    "오늘도 살아낸 당신, 정말 멋져요 🌱",
+    "당신은 생각보다 훨씬 더 소중한 사람이에요.",
+    "계속 나아가는 그 모습, 정말 대단해요 💪",
+    "오늘의 작은 노력도 분명히 의미 있어요.",
+    "지금까지 잘 해왔고, 앞으로도 잘 할 거예요 🌈",
+    "당신의 존재만으로도 이미 충분해요.",
+    "실수해도 괜찮아요, 그건 성장의 일부니까요.",
+    "오늘도 잘 버텨줘서 고마워요 😊",
+    "당신은 사랑받기 충분한 사람이에요 ❤️",
+    "지금 이 순간도 당신 편이에요. 나도 그래요."
 ]
 
-# --- 데이터 로드/저장 ---
-def load_data():
-    if not os.path.exists(DATA_FILE):
-        return {"stage": 0, "last_watered": ""}
-    with open(DATA_FILE, "r") as f:
-        return json.load(f)
+# UI
+st.title("🎁 랜덤 칭찬 머신")
+st.markdown("당신을 위한 작은 응원 한마디 💬")
 
-def save_data(data):
-    with open(DATA_FILE, "w") as f:
-        json.dump(data, f)
-
-# --- 앱 시작 ---
-st.set_page_config(page_title="나의 식물 키우기 🌱", page_icon="🌿")
-st.title("🌿 나만의 식물을 키워보세요!")
-st.write("매일 물을 주면 식물이 자라나요. 하루에 한 번만 줄 수 있어요.")
-
-# --- 데이터 처리 ---
-data = load_data()
-today = datetime.now().strftime("%Y-%m-%d")
-
-# --- 식물 상태 보여주기 ---
-stage = data["stage"]
-plant_icon = PLANT_IMAGES[stage]
-st.markdown(f"## 현재 식물 상태: {plant_icon} (단계 {stage})")
-
-# --- 물주기 기능 ---
-if data["last_watered"] == today:
-    st.info("오늘은 이미 물을 줬어요! 내일 또 와주세요 🌞")
-else:
-    if st.button("💧 물 주기"):
-        if stage < MAX_STAGE:
-            data["stage"] += 1
-            st.success("식물이 조금 자랐어요! 🌱")
-        else:
-            st.success("식물이 이미 활짝 피었어요! 🌻")
-        data["last_watered"] = today
-        save_data(data)
-        st.experimental_rerun()
-
+if st.button("칭찬 받기 💌"):
+    msg = random.choice(compliments)
+    st.markdown(f"<div class='compliment'>{msg}</div>", unsafe_allow_html=True)
