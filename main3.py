@@ -6,34 +6,6 @@ st.title("🎬 콘텐츠 타이틀/제목 생성기")
 st.markdown("키워드와 스타일을 입력하면 클릭을 유도할 수 있는 제목을 자동으로 생성해드립니다.")
 st.set_page_config(page_title="콘텐츠 타이틀 생성기", page_icon="🎬", layout="wide")
 
-# 스타일
-st.markdown("""
-    <style>
-        body {
-            background: linear-gradient(to right, #f5f7fa, #c3cfe2);
-        }
-        .title {
-            font-size: 40px;
-            font-weight: bold;
-            color: #4B0082;
-        }
-        .subtitle {
-            font-size: 18px;
-            color: #444;
-        }
-        .highlight-box {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-top: 1rem;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown('<div class="title">🎬 콘텐츠 타이틀/제목 생성기</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">키워드와 스타일을 입력하면 MZ세대 감성의 제목을 자동으로 생성해드립니다 ✨</div>', unsafe_allow_html=True)
-
 # 입력 폼
 keyword = st.text_input("🔍 키워드 입력 (예: 다이어트, 비건 뷰티, 홈트레이닝 등)")
 channel = st.selectbox("📺 콘텐츠 채널", [
