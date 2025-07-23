@@ -7,7 +7,11 @@ st.markdown("키워드와 스타일을 입력하면 클릭을 유도할 수 있�
 
 # 입력 폼
 keyword = st.text_input("🔍 키워드 입력 (예: 다이어트, 비건 뷰티, 홈트레이닝 등)")
-channel = st.selectbox("📺 콘텐츠 채널", ["YouTube", "Shorts", "블로그", "뉴스레터"])
+channel = st.selectbox("📺 콘텐츠 채널", [
+    "YouTube", "YouTube Shorts", "Instagram 피드", "Instagram 릴스",
+    "TikTok", "블로그", "뉴스레터", "브런치", "LinkedIn", "카카오뷰",
+    "Facebook", "Notion 페이지", "슬라이드쉐어", "YouTube 커뮤니티 글", "티스토리 블로그"
+])
 style = st.selectbox("🎯 제목 스타일", ["정보형", "감성형", "자극형", "리스트형", "의문형"])
 
 # 제목 템플릿 정의
