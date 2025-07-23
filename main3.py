@@ -1,6 +1,37 @@
 import streamlit as st
 import random
+st.markdown("""
+    <style>
+        body {
+            background: linear-gradient(to right, #fffde7, #fce4ec);
+        }
+        .title {
+            font-size: 42px;
+            font-weight: 800;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 18px;
+            color: #555;
+        }
+        .highlight-box {
+            background-color: #ffffffee;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.1);
+        }
+        .highlight-box h4 {
+            color: #c2185b;
+            font-size: 20px;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
+st.markdown('<div class="title">🎬 콘텐츠 타이틀/제목 생성기</div>', unsafe_allow_html=True)
 # 새로운 스타일 (모던 & 크림톤)
 st.markdown("""
     <style>
