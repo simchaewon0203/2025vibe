@@ -1,48 +1,181 @@
 import streamlit as st
-import pandas as pd
-import plotly.express as px
+import random
+import time
 
-st.set_page_config(page_title="광고 퍼널 분석기", page_icon="📉")
+st.set_page_config(page_title="랜덤 미니 게임 머신 🎮", page_icon="🎲")
 
-st.title("📉 광고 퍼널 분석 대시보드")
-st.markdown("단계별 전환 데이터를 입력하면 퍼널을 시각화하고, 전환률을 자동 분석합니다.")
+st.title("🎲 랜덤 미니 게임 머신")
+st.markdown("버튼을 누르면 무작위 미니 게임 하나가 나옵니다!")
 
-st.subheader("① 단계별 데이터 입력")
+# -------------------
+# 게임 목록
+# -------------------
+games = [
+    "가위바위보", "숫자 맞히기", "OX 퀴즈", "홀짝 게임", "타자 속도 테스트",
+    "기억력 테스트", "초성 퀴즈", "주사위 대결", "수학 문제", "가사 빈칸 맞히기"
+]
 
-# 단계별 입력
-st.write("각 퍼널 단계를 입력하세요:")
-step_names = ["노출 수", "클릭 수", "랜딩 페이지 머무름", "장바구니 담기", "구매 완료"]
-step_values = []
+if 'selected_game' not in st.session_state:
+    st.session_state.selected_game = None
+if 'typing_start' not in st.session_state:
+    st.session_state.typing_start = 0
+if 'memory_answer' not in st.session_state:
+    st.session_state.memory_answer = []
 
-for step in step_names:
-    val = st.number_input(f"{step}", min_value=0, step=1)
-    step_values.append(val)
+# -------------------
+# 게임 선택 버튼
+# -------------------
+if st.button("🎰 게임 랜덤 선택"):
+    st.session_state.selected_game = random.choice(games)
 
-# 퍼널 데이터프레임
-df = pd.DataFrame({
-    "단계": step_names,
-    "수치": step_values
-})
+# -------------------
+# 각 게임 정의
+# -------------------
 
-# 전환률 계산
-df["전환률(%)"] = df["수치"].pct_change().fillna(1) * 100
-df["전환률(%)"] = df["전환률(%)"].round(2)
-df.iloc[0, 2] = 100.0  # 첫 단계는 100%
+def game_rps():
+    st.subheader("✊ 가위바위보")
+    user = st.radio("당신의 선택은?", ["가위", "바위", "보"])
+    if st.button("결과 보기"):
+        comp = random.choice(["가위", "바위", "보"])
+        st.write(f"👾 컴퓨터: {comp}")
+        if user == comp:
+            st.success("비겼어요!")
+        elif (user == "가위" and comp == "보") or (user == "바위" and comp == "가위") or (user == "보" and comp == "바위"):
+            st.success("이겼어요! 🎉")
+        else:
+            st.error("졌어요 😢")
 
-st.subheader("② 전환 퍼널 시각화")
+def game_number():
+    st.subheader("🔢 숫자 맞히기 (1~10)")
+    answer = random.randint(1, 10)
+    guess = st.number_input("숫자를 입력하세요:", 1, 10, step=1)
+    if st.button("정답 확인"):
+        if guess == answer:
+            st.success("정답입니다! 🎉")
+        else:
+            st.error(f"틀렸어요! 정답은 {answer}였어요.")
 
-fig = px.funnel(df, x="수치", y="단계", text="전환률(%)", title="전환 퍼널", color_discrete_sequence=["#00BFC4"])
-st.plotly_chart(fig, use_container_width=True)
+def game_ox():
+    st.subheader("⭕ OX 퀴즈")
+    q = "바다는 짜다."  # 예시
+    user = st.radio(f"문제: {q}", ["O", "X"])
+    if st.button("정답 확인"):
+        if user == "O":
+            st.success("정답입니다! 🧂")
+        else:
+            st.error("틀렸어요!")
 
-# 테이블로 보기
-st.subheader("③ 상세 데이터 보기")
-st.dataframe(df)
+def game_even_odd():
+    st.subheader("🎯 홀짝 게임")
+    user = st.radio("홀일까 짝일까?", ["홀", "짝"])
+    if st.button("확인하기"):
+        num = random.randint(1, 100)
+        result = "홀" if num % 2 else "짝"
+        st.write(f"숫자: {num}")
+        if user == result:
+            st.success("정답!")
+        else:
+            st.error(f"틀렸어요! 정답은 {result}")
 
-# 위험 구간 알림
-st.subheader("🚨 전환률 저하 경고")
-threshold = st.slider("문제 구간 기준 전환률 (%)", min_value=0, max_value=100, value=40)
+def game_typing():
+    st.subheader("⌨️ 타자 속도 테스트")
+    sentence = "코딩은 생각하는 힘이다."
+    st.write(f"문장: `{sentence}`")
+    if st.button("시작"):
+        st.session_state.typing_start = time.time()
+    user_input = st.text_input("정확히 입력해보세요:")
+    if user_input and st.session_state.typing_start:
+        elapsed = round(time.time() - st.session_state.typing_start, 2)
+        if user_input == sentence:
+            st.success(f"완벽합니다! ⏱️ 걸린 시간: {elapsed}초")
+        else:
+            st.warning("문장이 달라요 😅")
 
-for i in range(1, len(df)):
-    if df["전환률(%)"].iloc[i] < threshold:
-        st.error(f"⚠️ `{df['단계'].iloc[i-1]} → {df['단계'].iloc[i]}` 구간 전환률 {df['전환률(%)'].iloc[i]}% (기준 미달)")
+def game_memory():
+    st.subheader("🧠 기억력 테스트")
+    words = ["사과", "고양이", "비행기", "커피", "하늘"]
+    if not st.session_state.memory_answer:
+        st.session_state.memory_answer = random.sample(words, 3)
+    st.write("3초 동안 단어를 외워보세요!")
+    st.write(st.session_state.memory_answer)
+    time.sleep(3)
+    st.write("이제 입력해보세요:")
+    guesses = st.text_input("쉼표로 구분해서 입력 (예: 사과,하늘,커피)")
+    if st.button("제출"):
+        user_list = [x.strip() for x in guesses.split(",")]
+        if set(user_list) == set(st.session_state.memory_answer):
+            st.success("기억력 굿! 🎉")
+        else:
+            st.error("아쉽지만 틀렸어요.")
+        st.session_state.memory_answer = []
 
+def game_initials():
+    st.subheader("💡 초성 퀴즈")
+    answer = "코딩"
+    hint = "ㅋㄷ"
+    st.write(f"초성: {hint}")
+    user = st.text_input("정답은?")
+    if st.button("정답 확인"):
+        if user.strip() == answer:
+            st.success("정답입니다! 💡")
+        else:
+            st.error("오답입니다!")
+
+def game_dice():
+    st.subheader("🎲 주사위 대결")
+    if st.button("던지기!"):
+        user = random.randint(1, 6)
+        comp = random.randint(1, 6)
+        st.write(f"🎲 당신: {user}, 컴퓨터: {comp}")
+        if user > comp:
+            st.success("이겼어요! 🎉")
+        elif user == comp:
+            st.info("비겼어요!")
+        else:
+            st.error("졌어요 😢")
+
+def game_math():
+    st.subheader("➕ 랜덤 수학 문제")
+    a, b = random.randint(1, 20), random.randint(1, 20)
+    user = st.number_input(f"{a} + {b} = ?", step=1)
+    if st.button("확인"):
+        if user == a + b:
+            st.success("정답입니다! 🔢")
+        else:
+            st.error(f"틀렸어요. 정답은 {a + b}")
+
+def game_lyrics():
+    st.subheader("🎵 가사 빈칸 맞히기")
+    question = "나는 ______를 사랑해 (힌트: 동물)"
+    answer = "고양이"
+    st.write(question)
+    user = st.text_input("빈칸에 들어갈 말은?")
+    if st.button("제출"):
+        if user.strip() == answer:
+            st.success("정답! 🎵")
+        else:
+            st.error("틀렸어요!")
+
+# -------------------
+# 게임 실행
+# -------------------
+if st.session_state.selected_game == "가위바위보":
+    game_rps()
+elif st.session_state.selected_game == "숫자 맞히기":
+    game_number()
+elif st.session_state.selected_game == "OX 퀴즈":
+    game_ox()
+elif st.session_state.selected_game == "홀짝 게임":
+    game_even_odd()
+elif st.session_state.selected_game == "타자 속도 테스트":
+    game_typing()
+elif st.session_state.selected_game == "기억력 테스트":
+    game_memory()
+elif st.session_state.selected_game == "초성 퀴즈":
+    game_initials()
+elif st.session_state.selected_game == "주사위 대결":
+    game_dice()
+elif st.session_state.selected_game == "수학 문제":
+    game_math()
+elif st.session_state.selected_game == "가사 빈칸 맞히기":
+    game_lyrics()
