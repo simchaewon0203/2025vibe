@@ -477,7 +477,3 @@ if keyword:
  encoded_query = urllib.parse.quote(f"{keyword} {style} {channel} 콘텐츠")
     youtube_url = f"https://www.youtube.com/results?search_query={encoded_query}"
     st.markdown(f"[🔗 유튜브에서 '{keyword}' 관련 영상 검색하기]({youtube_url})")
-
-    # 이미지 출력
-    image_url = f"https://source.unsplash.com/800x500/?{urllib.parse.quote(keyword)}"
-    st.image(image_url, caption=f"{keyword} 관련 이미지 (출처: Unsplash)", use_column_width=True)
