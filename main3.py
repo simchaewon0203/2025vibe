@@ -481,8 +481,3 @@ if keyword:
     # 이미지 출력
     image_url = f"https://source.unsplash.com/800x500/?{urllib.parse.quote(keyword)}"
     st.image(image_url, caption=f"{keyword} 관련 이미지 (출처: Unsplash)", use_column_width=True)
-
-    if st.button("🔁 제목 다시 생성"):
-        st.rerun()
-else:
-    st.info("키워드를 입력하시면 콘텐츠 제목을 추천해드립니다.")
