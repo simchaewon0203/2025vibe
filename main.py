@@ -1,63 +1,36 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="랜덤 미니 게임 🎲", page_icon="🎮")
+# 예시 메뉴 데이터
+menu_data = {
+    "든든한 한식": ["김치찌개", "된장국", "소고기미역국", "떡국"],
+    "가볍게 먹는 샐러드": ["닭가슴살 샐러드", "과일 요거트", "시리얼 + 우유"],
+    "간단한 빵류": ["크로와상 + 아메리카노", "토스트 + 계란", "샌드위치"],
+    "외식 추천": ["맥모닝", "편의점 도시락", "프랜차이즈 아침 세트"],
+}
 
-st.title("🎲 랜덤 미니 게임")
-st.write("아래 버튼을 눌러 무작위 게임을 즐겨보세요!")
+# 사용자 입력
+st.title("🥣 오늘 아침 뭐 먹을까?")
+st.write("아래 항목을 선택하면 오늘 아침 메뉴를 추천해드릴게요!")
 
-# --- 게임 목록 ---
-games = ["가위바위보", "숫자 맞히기", "OX 퀴즈"]
+mood = st.selectbox("오늘의 기분은 어떤가요?", ["상쾌함", "피곤함", "바쁨", "느긋함"])
+place = st.radio("어디서 먹을 예정인가요?", ["집", "회사/학교", "외식"])
+diet = st.multiselect("먹고 싶은 종류를 선택하세요", list(menu_data.keys()))
 
-# 세션에 선택된 게임 저장
-if 'selected_game' not in st.session_state:
-    st.session_state.selected_game = None
+# 추천 버튼
+if st.button("추천 받기"):
+    selected = []
 
-if st.button("게임 랜덤 선택 🎰"):
-    st.session_state.selected_game = random.choice(games)
+    if diet:
+        for style in diet:
+            selected.extend(menu_data[style])
+    else:
+        for style in menu_data:
+            selected.extend(menu_data[style])
 
-# --- 각 게임 정의 ---
+    recommendation = random.choice(selected)
+    st.success(f"오늘의 추천 아침 메뉴는 🍽️ **{recommendation}** 입니다!")
 
-# 1. 가위바위보
-def game_rps():
-    st.subheader("✊ 가위바위보")
-    user = st.radio("당신의 선택은?", ["가위", "바위", "보"])
-    if st.button("결과 보기"):
-        comp = random.choice(["가위", "바위", "보"])
-        st.write(f"👾 컴퓨터: {comp}")
-        if user == comp:
-            st.success("비겼어요!")
-        elif (user == "가위" and comp == "보") or (user == "바위" and comp == "가위") or (user == "보" and comp == "바위"):
-            st.success("이겼어요! 🎉")
-        else:
-            st.error("졌어요 😢")
+    # 이미지가 있다면 아래와 같이 추가 가능
+    # st.image("images/gimbap.jpg", use_column_width=True)
 
-# 2. 숫자 맞히기
-def game_number():
-    st.subheader("🔢 숫자 맞히기 (1~10)")
-    answer = random.randint(1, 10)
-    guess = st.number_input("숫자를 입력하세요:", min_value=1, max_value=10, step=1)
-    if st.button("정답 확인"):
-        if guess == answer:
-            st.success("정답입니다! 🎉")
-        else:
-            st.error(f"틀렸어요! 정답은 {answer}였어요.")
-
-# 3. OX 퀴즈
-def game_ox():
-    st.subheader("⭕ OX 퀴즈")
-    question = "코끼리는 날 수 있다."
-    user = st.radio(f"문제: {question}", ["O", "X"])
-    if st.button("정답 확인"):
-        if user == "X":
-            st.success("정답입니다! 🎉")
-        else:
-            st.error("틀렸어요 😅")
-
-# --- 선택된 게임 실행 ---
-if st.session_state.selected_game == "가위바위보":
-    game_rps()
-elif st.session_state.selected_game == "숫자 맞히기":
-    game_number()
-elif st.session_state.selected_game == "OX 퀴즈":
-    game_ox()
