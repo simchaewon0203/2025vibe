@@ -9,7 +9,7 @@ st.markdown("""
             font-size: 42px;
             font-weight: 800;
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            background: linear-gradient(30deg, red, orange, yellow, green, blue, indigo, violet);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
