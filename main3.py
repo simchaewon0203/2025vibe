@@ -44,9 +44,6 @@ style_descriptions = {
 # 스타일 설명 출력
 if style:
     st.caption(f"ℹ️ 스타일 설명: {style_descriptions.get(style, '설명이 준비되지 않았습니다.')}")
-
-# 템플릿 정의
-from templates import title_templates
 # 제목 템플릿 정의
 title_templates = {
     "스토리텔링형": [
