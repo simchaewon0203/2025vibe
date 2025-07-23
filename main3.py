@@ -12,7 +12,6 @@ st.markdown("""
             background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.3); /* ← 그림자 효과 */
         }
         .subtitle {
             font-size: 18px;
@@ -32,8 +31,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# 🎬 타이틀에 무지개 텍스트 적용
 st.markdown('<div class="title">🎬 콘텐츠 타이틀/제목 생성기</div>', unsafe_allow_html=True)
 
+# 서브타이틀 유지
 st.markdown('<div class="subtitle">키워드와 스타일을 입력하면 감각적인 제목을 자동으로 생성해드립니다 ✨</div>', unsafe_allow_html=True)
 # 입력 폼
 keyword = st.text_input("🔍 키워드 입력 (예: 다이어트, 비건 뷰티, 홈트레이닝 등)")
