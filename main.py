@@ -38,5 +38,6 @@ if keyword:
     sentence = random.choice(templates[style]).format(keyword=keyword)
     st.subheader("🎯 생성된 문구")
     st.success(sentence)
-    st.button("🔁 다시 생성하기", on_click=st.experimental_rerun)
+    if st.button("🔁 다시 생성하기"):
+        st.rerun()  # <- 여기를 수정
     st.code(sentence, language='markdown')
