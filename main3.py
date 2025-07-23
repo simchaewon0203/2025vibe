@@ -474,6 +474,3 @@ if keyword:
 
     if st.button("🔁 제목 다시 생성"):
         st.rerun()
- encoded_query = urllib.parse.quote(f"{keyword} {style} {channel} 콘텐츠")
-    youtube_url = f"https://www.youtube.com/results?search_query={encoded_query}"
-    st.markdown(f"[🔗 유튜브에서 '{keyword}' 관련 영상 검색하기]({youtube_url})")
