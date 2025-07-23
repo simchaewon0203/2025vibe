@@ -6,8 +6,8 @@ st.markdown("""
             background: linear-gradient(to right, #fffde7, #fce4ec);
         }
         .title {
-            font-size: 62px;
-            font-weight: 900;
+            font-size: 52px;
+            font-weight: 800;
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
             -webkit-background-clip: text;
